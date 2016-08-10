@@ -1,0 +1,108 @@
+<div class="banner banner-sm">
+  <div class="bg-image zoom focus-bottom-left" />
+</div>
+<div class="page-header page-header-sm">
+  <div class="header-content">
+    <h1>How can we help you?</h1>
+    <div class="header-textbox">
+      <p>Whether you are looking for an immediate quote or just want to know more about our capabilities please call us to speak to a member of our team or fill in the below form.</p>
+    </div>
+  </div>
+</div>
+
+<div class="row page-section">
+  <div class="col-md-4 centre">
+    <div class="circle call-us">
+      <div>
+        <p><img src="/assets/images/icons/Call1.png" height="75px"/></p>
+        <p class="callout highlight">CALL US</p>
+        <p class="callout highlight">08454 856 384</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-1" />
+  <div class="col-md-7">
+    <script>
+      var onloadCallback = function() {
+        //alert("grecaptcha is ready!");
+        grecaptcha.render('captcha_element', {
+          'sitekey' : document.registrationform.siteKey.value
+        });
+      };
+      function checkCaptcha() {
+        //alert("form submitted");
+        var captaRes = grecaptcha.getResponse();
+        if (captaRes == '') {
+          alert("Please resolve the captcha and submit!");
+          return false;
+        } else {
+          var theUrl = location.href.substr(0, location.href.indexOf("/")) + "verifycaptcha?response="+captaRes;
+          var xmlHttp = new XMLHttpRequest();
+          xmlHttp.open( "GET", theUrl, false );
+          xmlHttp.send( null );
+          var resp = JSON.parse(xmlHttp.responseText);
+          if (resp.success) {
+            //alert("Captcha Accepted! - " + resp.success);
+            return true;
+          } else {
+            alert("Incorrect captcha, Please resolve the captcha correctly and submit!");
+            return false;
+          }
+        }
+      }
+    </script>
+    <form name="registrationform" onsubmit="return checkCaptcha()" action="https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" target="_self" method="POST">
+
+      <input type=hidden name="oid" value="{{environment.webtoleadId}}">
+      <input type=hidden name="retURL" value="{{environment.salesforceCallbackUrl}}">
+      <input type=hidden name="siteKey" value="{{environment.captchaSiteKey}}">
+      <fieldset>
+        <div class="form-group" ng-class="{'has-error': registrationform.first_name.$invalid && !registrationform.first_name.$pristine}">
+          <label for="first_name">First Name</label>
+          <input id="first_name" class="form-control" data-ng-model="register.firstname" maxlength="40" name="first_name" size="20" type="text" required />
+          <span ng-show="registrationform.first_name.$error.required && !registrationform.first_name.$pristine" class="help-inline">Required</span>
+        </div>
+        <div class="form-group" ng-class="{'has-error': registrationform.last_name.$invalid && !registrationform.last_name.$pristine}">
+          <label for="last_name">Last Name</label>
+          <input id="last_name" class="form-control" data-ng-model="register.lastname" maxlength="80" name="last_name" size="20" type="text" required />
+          <span ng-show="registrationform.last_name.$error.required && !registrationform.last_name.$pristine" class="help-inline">Required</span>
+        </div>
+        <div class="form-group" ng-class="{'has-error': registrationform.company.$invalid && !registrationform.company.$pristine}">
+          <label for="company">Company</label>
+          <input id="company" class="form-control" data-ng-model="register.company" maxlength="40" name="company" size="20" type="text" required />
+          <span ng-show="registrationform.company.$error.required && !registrationform.company.$pristine" class="help-inline">Required</span>
+        </div>
+        <div class="form-group" ng-class="{'has-error': registrationform.email.$invalid && !registrationform.email.$pristine}">
+          <label for="email">Email</label>
+          <input id="email" class="form-control" data-ng-model="register.email" maxlength="80" name="email" size="20" type="email" required />
+          <span ng-show="registrationform.email.$error.required && !registrationform.email.$pristine" class="help-inline">Required</span>
+          <span ng-show="registrationform.email.$error.email" class="help-inline">Please enter a valid email address</span>
+        </div>
+        <div class="form-group" ng-class="{'has-error': registrationform.telephone.$invalid && !registrationform.telephone.$pristine}">
+          <label for="telephone">Tel No:</label>
+          <input id="telephone" class="form-control" data-ng-model="register.telephone" maxlength="40" name="telephone" size="20" type="text" required />
+          <span ng-show="registrationform.telephone.$error.required && !registrationform.telephone.$pristine" class="help-inline">Required</span>
+        </div>
+        <div class="form-group" ng-class="{'has-error': registrationform.enquiry.$invalid && !registrationform.enquiry.$pristine}">
+          <label for="enquiry">Your enquiry:</label>
+          <textarea id="enquiry" class="form-control" data-ng-model="register.enquiry" rows="5" maxlength="1000" name="description" size="20" type="text" required />
+          <span ng-show="registrationform.enquiry.$error.required && !registrationform.enquiry.$pristine" class="help-inline">Required</span>
+        </div>
+        <br/>
+        <div id="captcha_element"></div>
+        <br/>
+        <button class="btn btn-primary" data-ng-disabled="registrationform.$invalid" type="submit">Submit</button>
+      </fieldset>
+    </form>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+  </div>
+</div>
+<div class="contact-us">
+  <div class="contact-us-semicircle">
+    <div>
+      <p class="callout highlight">Contact Us</p>
+      <p class="callout-sm"><a href="/#/contact">CLICK HERE</a></p>
+      <p class="callout highlight"><img src="/assets/images/icons/Call2_White.png"> 0800 800 800</p>
+    </div>
+  </div>
+</div>
