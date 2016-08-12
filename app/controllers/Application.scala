@@ -1,18 +1,19 @@
 package controllers
 
 import models._
-
+import org.mindrot.jbcrypt.BCrypt
 import play.api.cache._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
 import play.api.mvc._
 import play.api.Configuration
+import salesforce.SalesforceService
 
 import scala.concurrent.duration._
 
 /** Application controller, handles authentication */
-class Application(val cache: CacheApi, configuration: Configuration) extends Controller with Security with Logging {
+class Application(val cache: CacheApi, configuration: Configuration, salesforceService: SalesforceService) extends Controller with Security with Logging {
 
   val cacheDuration = 1.day
 
@@ -85,7 +86,7 @@ class Application(val cache: CacheApi, configuration: Configuration) extends Con
       },
       credentials => {
         // TODO Check credentials, log user in, return correct token
-        User.findByEmailAndPassword(credentials.email, credentials.password).fold {
+        findByEmailAndPassword(credentials.email, credentials.password).fold {
           log.info("Unregistered user tried to log in")
           BadRequest(Json.obj("status" -> "KO", "message" -> "User not registered"))
         } { user =>
@@ -99,13 +100,30 @@ class Application(val cache: CacheApi, configuration: Configuration) extends Con
            *
            */
           val token = java.util.UUID.randomUUID.toString
-          cache.set(token, user.id.get)
-          log.info(s"User ${user.id.get} succesfully logged in")
+          cache.set(token, user.id)
+          log.info(s"User ${user.id} succesfully logged in")
           Ok(Json.obj("token" -> token))
             .withCookies(Cookie(AuthTokenCookieKey, token, None, httpOnly = false))
         }
       }
     )
+  }
+
+  def findByEmailAndPassword(email: String, password: String): Option[User] = {
+    val contact: Contact = salesforceService.getContact("Email", email)
+    if (contact != null && contact.password != None) {
+      if (BCrypt.checkpw(password, contact.password.getOrElse("empty"))) {
+        Some(User(contact.id, contact.email.getOrElse("dummy"), password, contact.firstName + " " + contact.lastName, None))
+      } else {
+        None
+      }
+    } else {
+      None
+    }
+    // TODO: find the corresponding user; don't forget to encrypt the password
+    //
+    // For now return a fake user
+    //Some(User(Some(3L), email, password, "John Smith", None))
   }
 
   /**

@@ -20,7 +20,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   lazy val salesforceDao = new salesforce.SalesforceDao(defaultCacheApi, wsClient, configuration)
   lazy val captchaValidationService = new captcha.CaptchaValidationService(wsClient, configuration)
 
-  lazy val applicationController = new controllers.Application(defaultCacheApi, configuration)
+  lazy val applicationController = new controllers.Application(defaultCacheApi, configuration, salesforceService)
   lazy val usersController = new controllers.Users(defaultCacheApi, salesforceService)
   //lazy val salesforceController = new controllers.Salesforce(defaultCacheApi, salesforceService)
   lazy val captchaController = new controllers.Captcha(defaultCacheApi, captchaValidationService)

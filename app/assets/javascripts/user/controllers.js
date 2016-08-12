@@ -10,6 +10,8 @@ define([], function() {
     $scope.login = function(credentials) {
       userService.loginUser(credentials).then(function(/*user*/) {
         $location.path('/dashboard');
+      }, function() {
+        alert("Incorrect username/password");
       });
     };
   };
@@ -20,6 +22,8 @@ define([], function() {
       //alert("In submit form "+ $scope.contact.Id);
       if ($scope.credentials.password !== $scope.credentials.cnfpassword) {
         $window.alert("Passwords do not match, please enter again!");
+      } else if ($scope.credentials.password.length < 8) {
+        $window.alert("Password length should be minimum 8 characters long, please enter again!");
       } else {
         var data = {
           id : $scope.contact.Id,

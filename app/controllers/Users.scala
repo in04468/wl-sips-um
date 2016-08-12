@@ -16,12 +16,12 @@ class Users(val cache: CacheApi, salesforceService: SalesforceService) extends C
     * @return The user in JSON format.
     */
   def authUser() = HasToken(parse.empty) { token => userId => implicit request =>
-    Ok(Json.toJson(User.findOneById(userId)))
+    Ok(Json.toJson(findOneById(userId)))
   }
 
   /** Retrieves the user for the given id as JSON */
-  def user(id: Long) = HasToken(parse.empty) { token => userId => implicit request =>
-    Ok(Json.toJson(User.findOneById(id)))
+  def user(id: String) = HasToken(parse.empty) { token => userId => implicit request =>
+    Ok(Json.toJson(findOneById(id)))
   }
 
   /** Creates a user from the given JSON */
@@ -31,13 +31,13 @@ class Users(val cache: CacheApi, salesforceService: SalesforceService) extends C
   }
 
   /** Updates the user for the given id from the JSON body */
-  def updateUser(id: Long) = HasToken(parse.json) { token => userId => implicit request =>
+  def updateUser(id: String) = HasToken(parse.json) { token => userId => implicit request =>
     // TODO Implement User creation, typically via request.body.validate[User]
     NotImplemented
   }
 
   /** Deletes a user for the given id */
-  def deleteUser(id: Long) = HasToken(parse.empty) { token => userId => implicit request =>
+  def deleteUser(id: String) = HasToken(parse.empty) { token => userId => implicit request =>
     // TODO Implement User creation, typically via request.body.validate[User]
     NotImplemented
   }
@@ -64,5 +64,17 @@ class Users(val cache: CacheApi, salesforceService: SalesforceService) extends C
     }
     Ok(Json.obj("success" -> success))
     }
+  }
+
+  def findOneById(id: String): Option[User] = {
+    val contact: Contact = salesforceService.getContact("Id", id)
+    if (contact != null) {
+      Some(User(contact.id, contact.email.getOrElse("dummy"), contact.password.getOrElse("dummy"), contact.firstName + " " + contact.lastName, None))
+    } else {
+      None
+    }
+    // TODO: find the corresponding user
+    //
+
   }
 }

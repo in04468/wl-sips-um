@@ -1,9 +1,10 @@
 package models
 
 import org.joda.time.DateTime
+import salesforce.{SalesforceDao, SalesforceService}
 
 case class User(
-  id: Option[Long],
+  id: String,
   email: String,
   password: String,
   name: String,
@@ -17,7 +18,7 @@ object User {
   import play.api.libs.functional.syntax._
 
   implicit val UserFromJson: Reads[User] = (
-    (__ \ "id").readNullable[Long] ~
+    (__ \ "id").read[String] ~
     (__ \ "email").read(Reads.email) ~
     (__ \ "password").read[String] ~
     (__ \ "name").read[String] ~
@@ -26,7 +27,7 @@ object User {
   )(User.apply _)
 
   implicit val UserToJson: Writes[User] = (
-    (__ \ "id").writeNullable[Long] ~
+    (__ \ "id").write[String] ~
     (__ \ "email").write[String] ~
     (__ \ "password").writeNullable[String] ~ // make nullable so password can be omitted
     (__ \ "name").write[String] ~
@@ -40,24 +41,5 @@ object User {
     user.dateOfBirth,
     user.createdAt
   ))
-
-
-  def findOneById(id: Long): Option[User] = {
-    // TODO: find the corresponding user
-    //
-    // For now return a fake user
-    if (id == 3) {
-      Some(User(Some(3L), "test@test.com", "mypassword", "John Smith", None))
-    } else {
-      None
-    }
-  }
-
-  def findByEmailAndPassword(email: String, password: String): Option[User] = {
-    // TODO: find the corresponding user; don't forget to encrypt the password
-    //
-    // For now return a fake user
-    Some(User(Some(3L), email, password, "John Smith", None))
-  }
 
 }

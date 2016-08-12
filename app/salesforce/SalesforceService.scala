@@ -34,8 +34,8 @@ class SalesforceService(val salesforceDao: SalesforceDao) extends Logging{
   }
 
   def getContact(field: String, value:String) : Contact = {
-    val queryStr = "select Id,FirstName,LastName,Email,Token__c,Activated_On__c from Contact where " + field + " = '" + value + "'"
-    log.debug("Querying sales force with: '" + queryStr + "'")
+    val queryStr = "select Id,FirstName,LastName,Email,Token__c,Activated_On__c,Password__c from Contact where " + field + " = '" + value + "'"
+    log.info("Querying sales force with: '" + queryStr + "'")
     var result: Contact = null
     try {
       val lresult = salesforceDao.query(queryStr).validate[Seq[Contact]].get
@@ -44,7 +44,7 @@ class SalesforceService(val salesforceDao: SalesforceDao) extends Logging{
       case ex: SalesforceException => log.error("ERROR: " + ex.getMessage +"\nError Description: " + ex.getCause)
       case ex: Exception => log.error("ERROR: " + ex.getMessage +"\nError Description: " + ex.getCause)
     }
-    log.debug("Got results : " + result)
+    log.info("Got results : " + result)
     return result
   }
 

@@ -7,8 +7,8 @@ define(['angular', './controllers', 'common'], function(angular, controllers) {
   var mod = angular.module('user.routes', ['user.services', 'yourprefix.common']);
   mod.config(['$routeProvider', function($routeProvider) {
     $routeProvider
-//      .when('/login', {templateUrl:'/assets/javascripts/user/login.html', controller:controllers.LoginCtrl});
-      .when('/login', {templateUrl:'/assets/javascripts/home/notFound.html', controller:controllers.LoginCtrl})
+      .when('/login', {templateUrl:'/assets/javascripts/user/login.html', controller:controllers.LoginCtrl})
+      //.when('/login', {templateUrl:'/assets/javascripts/home/notFound.html', controller:controllers.LoginCtrl})
       .when('/activate/:token', {templateUrl:'/assets/javascripts/user/activation.html', controller:controllers.UserCtrl})
       .when('/actconf', {templateUrl:'/assets/javascripts/user/activationConfirm.html'})
       .when('/actfail', {templateUrl:'/assets/javascripts/user/activationFail.html'});
