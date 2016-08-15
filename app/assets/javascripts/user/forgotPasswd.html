@@ -1,0 +1,35 @@
+<div class="banner banner-sm">
+  <div class="bg-image zoom focus-bottom-left" />
+</div>
+<div class="page-header page-header-sm">
+  <div class="header-content">
+    <h1>Forgot Password?</h1>
+  </div>
+</div>
+<div class="row page-section">
+  <div class="col-md-1" />
+  <div class="col-md-7">
+    <div data-ng-if="!result">
+      <form name="form">
+        <fieldset>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" data-ng-model="$parent.credentials.email" placeholder="E-Mail" required /><br />
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary" data-ng-disabled="form.$invalid" data-ng-click="reqResetPasswd()">Reset Password</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div data-ng-if="result">
+      <div data-ng-if="!success">
+        <br/><p>ERROR: Unknown email address</p>
+      </div>
+      <div data-ng-if="success">
+        <br/><p>Password reset requested. An Email with reset password link has been sent to your email address.</p>
+      </div>
+    </div>
+  </div>
+</div>
+

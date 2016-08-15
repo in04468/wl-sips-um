@@ -8,8 +8,9 @@ define(['angular', './controllers', 'common'], function(angular, controllers) {
   mod.config(['$routeProvider', function($routeProvider) {
     $routeProvider
       .when('/login', {templateUrl:'/assets/javascripts/user/login.html', controller:controllers.LoginCtrl})
-      //.when('/login', {templateUrl:'/assets/javascripts/home/notFound.html', controller:controllers.LoginCtrl})
+      .when('/forgot', {templateUrl:'/assets/javascripts/user/forgotPasswd.html', controller:controllers.UserCtrl})
       .when('/activate/:token', {templateUrl:'/assets/javascripts/user/activation.html', controller:controllers.UserCtrl})
+      .when('/resetpasswd/:token', {templateUrl:'/assets/javascripts/user/resetpasswd.html', controller:controllers.UserCtrl})
       .when('/actconf', {templateUrl:'/assets/javascripts/user/activationConfirm.html'})
       .when('/actfail', {templateUrl:'/assets/javascripts/user/activationFail.html'});
       //.when('/users', {templateUrl:'/assets/templates/user/users.html', controller:controllers.UserCtrl})

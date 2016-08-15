@@ -24,7 +24,8 @@ PUT           /users/:id           controllers.Users.updateUser(id: String)
 DELETE        /users/:id           controllers.Users.deleteUser(id: String)
 GET           /authuser            controllers.Users.authUser()
 GET           /retrieveuser        controllers.Users.retrieveUser(token: String)
-PUT           /activateuser        controllers.Users.activateUser()
+PUT           /setuserpasswd        controllers.Users.setUserPassword()
+GET           /reqResetPasswd       controllers.Users.requestPasswdReset(email: String)
 
 # SalesforceAPI
 #GET           /contacts            controllers.Salesforce.getContacts()

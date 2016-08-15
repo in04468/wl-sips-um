@@ -18,7 +18,7 @@ define([], function() {
   LoginCtrl.$inject = ['$scope', '$location', 'userService'];
 
   var UserCtrl = function($scope, $routeParams, $window, $http) {
-    $scope.activateUser = function () {
+    $scope.setUserPasswd = function () {
       //alert("In submit form "+ $scope.contact.Id);
       if ($scope.credentials.password !== $scope.credentials.cnfpassword) {
         $window.alert("Passwords do not match, please enter again!");
@@ -30,7 +30,7 @@ define([], function() {
           email : $scope.contact.Email,
           password : $scope.credentials.password
         };
-        $http.put('/activateuser', JSON.stringify(data))
+        $http.put('/setuserpasswd', JSON.stringify(data))
         .success(function(response) {
           $scope.success = response.success;
           //alert("Result is " + $scope.success);
@@ -53,6 +53,13 @@ define([], function() {
         } else {
           $scope.validToken = true;
         }
+      });
+    };
+
+    $scope.reqResetPasswd = function() {
+      $http.get('/reqResetPasswd?email='+$scope.credentials.email).success(function(response) {
+        $scope.success = response.success;
+        $scope.result = true;
       });
     };
   };

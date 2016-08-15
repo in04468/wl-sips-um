@@ -66,4 +66,22 @@ class SalesforceService(val salesforceDao: SalesforceDao) extends Logging{
     return res
   }
 
+  def updateContactToken(id: String, token: String): Int = {
+    var res: Int = 0
+    val dateTimeFormat = new SimpleDateFormat("YYYY-MM-DD'T'hh:mm:ssZ")
+    //log.info("Date is :"+BCrypt.hashpw(password, BCrypt.gensalt()))
+    val jsonReq  : JsValue = Json.obj(
+      "Token__c" -> token,
+      "Activated_On__c" -> ""
+    )
+    try {
+      res = salesforceDao.update("Contact", id, jsonReq)
+      log.info("Update query result " + res)
+    } catch {
+      case ex: SalesforceException => log.error("ERROR: " + ex.getMessage +"\nError Description: " + ex.getCause)
+        res = 500
+    }
+    return res
+  }
+
 }

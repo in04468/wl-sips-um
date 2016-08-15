@@ -3,7 +3,7 @@
 </div>
 <div class="page-header page-header-sm">
   <div class="header-content">
-    <h1>Activate new account</h1>
+    <h1>Set Password</h1>
   </div>
 </div>
 
@@ -13,14 +13,14 @@
     <form name="form" ng-submit="setUserPasswd()" data-ng-init="retriveContact()">
       <div data-ng-if="validToken">
         <fieldset>
-          <div class="form-group">
+          <!--div class="form-group">
             <label for="first_name">Name: </label>
             {{contact.FirstName}} {{contact.LastName}}<br/>
           </div>
           <div class="form-group">
             <label for="email">Your Email address: </label>
             {{contact.Email}} <br/>
-          </div>
+          </div-->
           <div class="form-group">
             <label for="password">Enter Password</label>
             <input type="password" class="form-control" data-ng-model="$parent.credentials.password" placeholder="Password" required />
@@ -28,7 +28,7 @@
           <div class="form-group">
             <label for="cnfpassword">Confirm Password</label>
             <input type="password" class="form-control" data-ng-model="$parent.credentials.cnfpassword" placeholder="Confirm Password" required /><br />
-            <button class="btn btn-primary" data-ng-disabled="form.$invalid" type="submit">Activate</button>
+            <button class="btn btn-primary" data-ng-disabled="form.$invalid" type="submit">Submit</button>
           </div>
         </fieldset>
       </div>

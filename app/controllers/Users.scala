@@ -53,7 +53,7 @@ class Users(val cache: CacheApi, salesforceService: SalesforceService) extends C
     }
   }
 
-  def activateUser() = Action(parse.json) { request => {
+  def setUserPassword() = Action(parse.json) { request => {
     log.info("Got: " + (request.body \ "id").as[String])
     var success: Boolean = false
     val res = salesforceService.updateContact((request.body \ "id").as[String], (request.body \ "password").as[String])
@@ -66,6 +66,20 @@ class Users(val cache: CacheApi, salesforceService: SalesforceService) extends C
     }
   }
 
+  def requestPasswdReset(email: String) = Action {
+    var success: Boolean = false
+    val contact: Contact = salesforceService.getContact("Email", email)
+    if (contact != null) {
+      val res = salesforceService.updateContactToken(contact.id, java.util.UUID.randomUUID.toString)
+      if (res == 204) {
+        success = true
+      } else {
+        success = false
+      }
+    }
+    Ok(Json.obj("success" -> success))
+  }
+
   def findOneById(id: String): Option[User] = {
     val contact: Contact = salesforceService.getContact("Id", id)
     if (contact != null) {
@@ -73,8 +87,5 @@ class Users(val cache: CacheApi, salesforceService: SalesforceService) extends C
     } else {
       None
     }
-    // TODO: find the corresponding user
-    //
-
   }
 }

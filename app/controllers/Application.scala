@@ -120,10 +120,6 @@ class Application(val cache: CacheApi, configuration: Configuration, salesforceS
     } else {
       None
     }
-    // TODO: find the corresponding user; don't forget to encrypt the password
-    //
-    // For now return a fake user
-    //Some(User(Some(3L), email, password, "John Smith", None))
   }
 
   /**
