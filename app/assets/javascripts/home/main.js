@@ -10,6 +10,7 @@ define(['angular', './routes', './controllers'], function(angular, routes, contr
   mod.controller('HeaderCtrl', controllers.HeaderCtrl);
   mod.controller('HomeCtrl', controllers.HomeCtrl);
   mod.controller('FooterCtrl', controllers.FooterCtrl);
+  mod.controller('CookieCtrl', controllers.CookieCtrl);
   mod.controller('FaqCtrl', controllers.FaqCtrl);
   return mod;
 });

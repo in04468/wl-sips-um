@@ -23,11 +23,11 @@
           </div-->
           <div class="form-group">
             <label for="password">Enter Password</label>
-            <input type="password" class="form-control" data-ng-model="$parent.credentials.password" placeholder="Password" required />
+            <input type="password" class="form-control" data-ng-model="$parent.credentials.password" placeholder="Password" ng-minlength="8" required />
           </div>
           <div class="form-group">
             <label for="cnfpassword">Confirm Password</label>
-            <input type="password" class="form-control" data-ng-model="$parent.credentials.cnfpassword" placeholder="Confirm Password" required /><br />
+            <input type="password" class="form-control" data-ng-model="$parent.credentials.cnfpassword" placeholder="Confirm Password" ng-minlength="8" required /><br />
             <button class="btn btn-primary" data-ng-disabled="form.$invalid" type="submit">Submit</button>
           </div>
         </fieldset>

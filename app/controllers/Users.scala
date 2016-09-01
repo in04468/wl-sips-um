@@ -3,7 +3,7 @@ package controllers
 import play.api.cache.CacheApi
 import play.api.libs.json._
 import play.api.mvc._
-import models.{Attributes, Contact, User}
+import models.{Contact, User}
 import salesforce.SalesforceService
 
 /** Example controller; see conf/routes for the the mapping to routes */
@@ -19,32 +19,9 @@ class Users(val cache: CacheApi, salesforceService: SalesforceService) extends C
     Ok(Json.toJson(findOneById(userId)))
   }
 
-  /** Retrieves the user for the given id as JSON */
-  def user(id: String) = HasToken(parse.empty) { token => userId => implicit request =>
-    Ok(Json.toJson(findOneById(id)))
-  }
-
-  /** Creates a user from the given JSON */
-  def createUser() = HasToken(parse.json) { token => userId => implicit request =>
-    // TODO Implement User creation, typically via request.body.validate[User]
-    NotImplemented
-  }
-
-  /** Updates the user for the given id from the JSON body */
-  def updateUser(id: String) = HasToken(parse.json) { token => userId => implicit request =>
-    // TODO Implement User creation, typically via request.body.validate[User]
-    NotImplemented
-  }
-
-  /** Deletes a user for the given id */
-  def deleteUser(id: String) = HasToken(parse.empty) { token => userId => implicit request =>
-    // TODO Implement User creation, typically via request.body.validate[User]
-    NotImplemented
-  }
-
   def retrieveUser(token: String) = Action {
     //Verify the token with salesforce and fet the user details
-    val contact: Contact = salesforceService.getContact("Token__c", token)
+    val contact: Contact = salesforceService.getContactByToken(token)
     //log.info("Retrived user with contact.activatedOn: "+contact.activatedOn)
     if (contact != null && contact.activatedOn == None ) {
       Ok(Json.toJson(contact))
@@ -68,7 +45,7 @@ class Users(val cache: CacheApi, salesforceService: SalesforceService) extends C
 
   def requestPasswdReset(email: String) = Action {
     var success: Boolean = false
-    val contact: Contact = salesforceService.getContact("Email", email)
+    val contact: Contact = salesforceService.getContactByEmail(email)
     if (contact != null) {
       val res = salesforceService.updateContactToken(contact.id, java.util.UUID.randomUUID.toString)
       if (res == 204) {
@@ -88,4 +65,14 @@ class Users(val cache: CacheApi, salesforceService: SalesforceService) extends C
       None
     }
   }
+
+  def getContactById(id:String) = Action {
+    val contact = salesforceService.getContactById(id)
+    if (contact != None && contact.get.accountId != None) {
+      Ok(Json.obj("contact" -> contact, "account" -> salesforceService.getAccountById(contact.get.accountId.get).get))
+    } else {
+      Ok(Json.obj("contact" -> contact))
+    }
+  }
+
 }

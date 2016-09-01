@@ -18,6 +18,9 @@
     <script data-main="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript" src="@routes.Assets.versioned("lib/requirejs/require.js")"></script>
   </head>
   <body>
+    @*-- Lead forensics -- *@
+    <script type="text/javascript" src="http://www.33-trk-srv.com/js/81611.js" ></script>
+    <noscript><img src="http://www.33-trk-srv.com/81611.png" style="display:none;" /></noscript>
     @*-- Header -- *@
     <nav class="navbar navbar-transparent" data-ng-controller="HeaderCtrl" data-ng-cloak>
       <div class="container" data-ng-switch="!!user" data-ng-cloak>
@@ -62,7 +65,7 @@
               </li>
             </ul>
           </div>
-          <div class="container" data-ng-switch-when="false">
+          <div data-ng-switch-when="false">
             <ul class="nav navbar-nav navbar-right">
               <li><a href="#/login">Login</a></li>
             </ul>
@@ -78,26 +81,28 @@
     @*-- Footer -- *@
     <footer data-ng-controller="FooterCtrl" data-ng-cloak>
       <div class="navbar navbar-transparent">
-          <div class="container">
-              <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#footer-navbar-body">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <ul class="nav navbar-nav">
-                  <li><a href="#/" class="navbar-brand">© Worldline 2016 all rights reserved</a></li>
-                </ul>
-              </div>
-              <div class="navbar-collapse collapse" id="footer-navbar-body">
-                  <ul class="nav navbar-nav">
-                    <li><a href="#">Terms of use</a></li>
-                    <li><a href="#">Policies</a></li>
-                    <li><a href="#">Cookies policy</a></li>
-                    <li><a href="#/contact">Contact us</a></li>
-                  </ul>
-              </div>
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#footer-navbar-body">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <div class="navbar-brand">
+              <ul class="nav navbar-left">
+                <li><a id="footer-wl-link" href="http://uk.worldline.com" target="_blank">© Worldline 2016 all rights reserved</a></li>
+              </ul>
+            </div>
           </div>
+          <div class="navbar-collapse collapse" id="footer-navbar-body">
+            <ul class="nav nav-justified">
+              <li><a href="#/termsofuse">Terms of use</a></li>
+              <li><a href="#/privacypolicy">Privacy policy</a></li>
+              <li><a href="#/cookiepolicy">Cookie policy</a></li>
+              <li><a href="#/contact">Contact us</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </footer>
   </body>

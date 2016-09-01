@@ -92,16 +92,41 @@ class SalesforceDao(val cache: CacheApi, wSClient: WSClient, configuration: Conf
     return Await.result(res, 30000 milliseconds)
   }
 
+  /**
+    * Updates the object in salesforce database identified by 'id'
+    * for the fields included in the JSON message
+    *
+    * @param obj type of the object e.g. Contact, Account, etc
+    * @param id String id of the object
+    * @param jsonObj json representation of the fields to be updated on object
+    * @return An HTTP status code indicating the result of the operation
+    */
   def update(obj : String, id : String, jsonObj : JsValue) : Int = {
     implicit val context = play.api.libs.concurrent.Execution.Implicits.defaultContext
-    val res: Future[Int] = constructUpdateRequest(getOAuthToken, obj, id).patch(jsonObj).map {
+    val res: Future[Int] = constructSObjectsRequest(getOAuthToken, obj, id).patch(jsonObj).map {
       //response => response.status
       response => response.status
     }
-    return Await.result(res, 3000 milliseconds)
+    return Await.result(res, 30000 milliseconds)
   }
 
-  def constructUpdateRequest(oAuthToken: OAuthToken, obj : String, id : String) : WSRequest = {
+  def getObject(obj : String, id : String) : JsValue = {
+    implicit val context = play.api.libs.concurrent.Execution.Implicits.defaultContext
+    val res: Future[JsValue] = constructSObjectsRequest(getOAuthToken, obj, id).get().map {
+      response => response.json.as[JsValue]
+    }
+    Await.result(res, 30000 milliseconds)
+  }
+
+  /**
+    * Helper function to construct the sObject request for salesforce call
+    *
+    * @param oAuthToken oAuth authentication details
+    * @param obj type of the object e.g. Contact, Account, etc
+    * @param id String id of the object
+    * @return a constructed web-request
+    */
+  def constructSObjectsRequest(oAuthToken: OAuthToken, obj : String, id : String) : WSRequest = {
     return wSClient.url(oAuthToken.instance_url + SOBJECTS_URL + obj + "/" + id)
       .withHeaders("Authorization" -> ("Bearer " +oAuthToken.access_token))
   }

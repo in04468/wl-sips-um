@@ -9,27 +9,50 @@
 <div class="row page-section">
   <div class="col-md-1" />
   <div class="col-md-7">
-    <div data-ng-if="!result">
-      <form name="form">
+      <script>
+        var onloadCallback = function() {
+        //alert("grecaptcha is ready!");
+        grecaptcha.render('captcha_element', {
+          'sitekey' : document.form.siteKey.value
+        });
+      };
+      function checkCaptcha() {
+        //alert("form submitted");
+        var captaRes = grecaptcha.getResponse();
+        if (captaRes == '') {
+          alert("Please resolve the captcha and submit!");
+          return false;
+        } else {
+          var theUrl = location.href.substr(0, location.href.indexOf("/")) + "verifycaptcha?response="+captaRes;
+          var xmlHttp = new XMLHttpRequest();
+          xmlHttp.open( "GET", theUrl, false );
+          xmlHttp.send( null );
+          var resp = JSON.parse(xmlHttp.responseText);
+          if (resp.success) {
+            //alert("Captcha Accepted! - " + resp.success);
+            return true;
+          } else {
+            alert("Incorrect captcha, Please resolve the captcha correctly and submit!");
+            return false;
+          }
+        }
+      }
+      </script>
+      <form name="form" ng-submit="reqResetPasswd()">
+        <input type=hidden name="siteKey" value="{{environment.captchaSiteKey}}">
         <fieldset>
           <div class="form-group">
             <label for="email">Email address</label>
             <input type="email" class="form-control" data-ng-model="$parent.credentials.email" placeholder="E-Mail" required /><br />
           </div>
+          <div id="captcha_element"></div>
+          <br/>
           <div class="form-group">
-            <button class="btn btn-primary" data-ng-disabled="form.$invalid" data-ng-click="reqResetPasswd()">Reset Password</button>
+            <button class="btn btn-primary" data-ng-disabled="form.$invalid" onclick="javascript:return checkCaptcha()">Reset Password</button>
           </div>
         </fieldset>
       </form>
-    </div>
-    <div data-ng-if="result">
-      <div data-ng-if="!success">
-        <br/><p>ERROR: Unknown email address</p>
-      </div>
-      <div data-ng-if="success">
-        <br/><p>Password reset requested. An Email with reset password link has been sent to your email address.</p>
-      </div>
-    </div>
+      <script src="https://www.google.com/recaptcha/api.js?hl=en-GB&onload=onloadCallback&render=explicit" async defer></script>
   </div>
 </div>
 

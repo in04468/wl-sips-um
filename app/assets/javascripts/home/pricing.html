@@ -13,14 +13,12 @@
   <div class="col-md-4 centre">
     <div class="circle">
       <div>
-        <p>
-          <span class="callout-lg highlight">£17.95</span><br/><span class="callout">for 150 transactions per month*</span></p>
+        <span class="callout">From<br/><span class="callout-lg highlight">£17.99</span><br/>for 220 transactions per month</span>
       </div>
     </div>
     <h4>No hidden fees</h4>
-    <p>No joining fees<br/>No set-up charges<br/>No minimum monthly fee</p>
-    <p>Our pricing is geared to every size of business. We have no set up fees, and no hidden costs. You just pay for what you choose and use. Typically – £17.95 for 150 transactions per month.</p> 
-    <p>* T&Cs apply ... based on ...</p>
+    <p>No joining fees<br/>No set-up charges</p>
+    <p>Our pricing is geared to every size of business. We have no set up fees, and no hidden costs. You just pay for what you choose and use. Typically – £17.99 for 220 transactions per month.</p> 
   </div>
   <div class="col-md-1" />
   <div class="col-md-7">
@@ -59,6 +57,7 @@
       <input type=hidden name="oid" value="{{environment.webtoleadId}}">
       <input type=hidden name="retURL" value="{{environment.salesforceCallbackUrl}}">
       <input type=hidden name="siteKey" value="{{environment.captchaSiteKey}}">
+      <input type=hidden name="Campaign_ID" value="70158000000514q">
       <fieldset>
         <div class="form-group" ng-class="{'has-error': registrationform.first_name.$invalid && !registrationform.first_name.$pristine}">
           <label for="first_name">First Name:</label>
@@ -81,20 +80,31 @@
           <span ng-show="registrationform.email.$error.required && !registrationform.email.$pristine" class="help-inline">Required</span>
           <span ng-show="registrationform.email.$error.email" class="help-inline">Please enter a valid email address</span>
         </div>
-        <div class="form-group" ng-class="{'has-error': registrationform.telephone.$invalid && !registrationform.telephone.$pristine}">
-          <label for="telephone">Tel No:</label>
-          <input id="telephone" class="form-control" data-ng-model="register.telephone" maxlength="40" name="telephone" size="20" type="text" required />
-          <span ng-show="registrationform.first_name.$error.required && !registrationform.telephone.$pristine" class="help-inline">Required</span>
+        <div class="form-group" ng-class="{'has-error': registrationform.phone.$invalid && !registrationform.phone.$pristine}">
+          <label for="phone">Tel No:</label>
+          <input id="phone" class="form-control" data-ng-model="register.telephone" maxlength="14" name="phone" size="20" type="text" ng-pattern="/^[0-9 ]{1,14}$/" required />
+          <span ng-show="registrationform.phone.$error.pattern && !registrationform.phone.$pristine" class="help-inline">Please enter only numbers</span>
+          <span ng-show="registrationform.phone.$error.required && !registrationform.phone.$pristine" class="help-inline">Required</span>
+        </div>
+        <div class="form-group" ng-class="{'has-error': registrationform.PostalCode.$invalid && !registrationform.PostalCode.$pristine}">
+          <label for="PostalCode">Post code:</label>
+          <input id="PostalCode" class="form-control" data-ng-model="register.postcode" maxlength="10" name="PostalCode" size="20" type="text" required />
+          <span ng-show="registrationform.PostalCode.$error.required && !registrationform.PostalCode.$pristine" class="help-inline">Required</span>
         </div>
         <div class="form-group" ng-class="{'has-error': registrationform.cardturnover.$invalid && !registrationform.cardturnover.$pristine}">
-          <label for="cardturnover">Card turnover per annum:</label>
-          <input id="cardturnover" class="form-control" data-ng-model="register.cardturnover" maxlength="40" name="cardturnover" size="20" type="text" required />
-          <span ng-show="registrationform.first_name.$error.required && !registrationform.cardturnover.$pristine" class="help-inline">Required</span>
+          <label for="00N5800000A0eNM">Card turnover per annum:</label>
+          <input id="00N5800000A0eNM" ng-attr-name="cardturnover" class="form-control" data-ng-model="register.cardturnover" maxlength="12" name="00N5800000A0eNM" size="20" type="text" ng-pattern="/^[0-9]{1,12}$/" required />
+          <span ng-show="registrationform.cardturnover.$error.pattern && !registrationform.cardturnover.$pristine" class="help-inline">Please enter a valid number</span>
+          <span ng-show="registrationform.cardturnover.$error.required && !registrationform.cardturnover.$pristine" class="help-inline">Required</span>
         </div>
         <div class="form-group" ng-class="{'has-error': registrationform.numtransactions.$invalid && !registrationform.numtransactions.$pristine}">
-          <label for="numtransactions">No. of transactions per annum:</label>
-          <input id="numtransactions" class="form-control" data-ng-model="register.numtransactions" maxlength="40" name="numtransactions" size="20" type="text" required />
-          <span ng-show="registrationform.first_name.$error.required && !registrationform.numtransactions.$pristine" class="help-inline">Required</span>
+          <label for="00N58000008Lnq8">No. of transactions per annum:</label>
+          <input id="00N58000008Lnq8" ng-attr-name="numtransactions" class="form-control" data-ng-model="register.numtransactions" maxlength="12" name="00N58000008Lnq8" size="20" type="text" ng-pattern="/^[0-9]{1,12}$/" required />
+          <span ng-show="registrationform.numtransactions.$error.pattern && !registrationform.numtransactions.$pristine" class="help-inline">Please enter a valid number</span>
+          <span ng-show="registrationform.numtransactions.$error.required && !registrationform.numtransactions.$pristine" class="help-inline">Required</span>
+        </div>
+        <div class="checkbox">
+          <label><input id="HasOptedOutOfEmail" data-ng-model="register.optout" name="HasOptedOutOfEmail" type="checkbox" value="1">Information that you provide to us may be used to send you marketing communications from Worldline and other Atos Group Companies about other services offered by the Atos Group. If you want to opt out of such communications please tick this box.</label>
         </div>
         <br/>
         <div id="captcha_element"></div>
@@ -102,7 +112,7 @@
         <button class="btn btn-primary" data-ng-disabled="registrationform.$invalid" type="submit">REQUEST QUOTE</button>
       </fieldset>
     </form>
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?hl=en-GB&onload=onloadCallback&render=explicit" async defer></script>
   </div>
 </div>
 <div class="contact-us">
@@ -110,7 +120,6 @@
     <div>
       <p class="callout highlight">Contact Us</p>
       <p class="callout-sm"><a href="/#/contact">CLICK HERE</a></p>
-      <p class="callout highlight"><img src="/assets/images/icons/Call2_White.png"> 0800 800 800</p>
     </div>
   </div>
 </div>

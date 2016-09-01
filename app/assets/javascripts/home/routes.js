@@ -14,6 +14,9 @@ define(['angular', './controllers', 'common'], function(angular, controllers) {
       .when('/contact',  {templateUrl: '/assets/javascripts/home/contact.html'})
       .when('/confirmation',  {templateUrl: '/assets/javascripts/home/confirmation.html'})
       .when('/faq',  {templateUrl: '/assets/javascripts/home/faq.html'})
+      .when('/termsofuse',  {templateUrl: '/assets/javascripts/home/termsofuse.html'})
+      .when('/privacypolicy',  {templateUrl: '/assets/javascripts/home/privacypolicy.html'})
+      .when('/cookiepolicy',  {templateUrl: '/assets/javascripts/home/cookiepolicy.html'})
       .otherwise( {templateUrl: '/assets/javascripts/home/notFound.html'});
   }]);
   return mod;

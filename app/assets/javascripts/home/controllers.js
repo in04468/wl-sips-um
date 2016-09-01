@@ -52,6 +52,23 @@ define([], function() {
   };
   //FooterCtrl.$inject = ['$scope'];
 
+  /** Cookie policy controller */
+  var CookieCtrl = function($scope, $cookies) {
+    $scope.getCookieAcceptance = function() {
+      // Retrieving a cookie
+      $scope.acceptCookies = $cookies.get('_cookies');
+    };
+    $scope.setCookieAcceptance = function() {
+      var now = new Date();
+      var expiry = new Date();
+      expiry.setYear(now.getFullYear() + 1);
+      $cookies.put('_cookies', '1', {'expires': expiry});
+      $scope.acceptCookies = $cookies.get('_cookies');
+    };
+    $scope.getCookieAcceptance();
+  };
+  CookieCtrl.$inject = ['$scope', '$cookies'];
+
    /** FAQ Controller */
   var FaqCtrl = function($scope, $http) {
     $scope.getFaqs = function() {
@@ -78,6 +95,7 @@ define([], function() {
     HeaderCtrl: HeaderCtrl,
     FooterCtrl: FooterCtrl,
     HomeCtrl: HomeCtrl,
+    CookieCtrl: CookieCtrl,
     FaqCtrl: FaqCtrl
   };
 

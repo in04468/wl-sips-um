@@ -22,8 +22,6 @@ define([], function() {
       //alert("In submit form "+ $scope.contact.Id);
       if ($scope.credentials.password !== $scope.credentials.cnfpassword) {
         $window.alert("Passwords do not match, please enter again!");
-      } else if ($scope.credentials.password.length < 8) {
-        $window.alert("Password length should be minimum 8 characters long, please enter again!");
       } else {
         var data = {
           id : $scope.contact.Id,
@@ -59,7 +57,7 @@ define([], function() {
     $scope.reqResetPasswd = function() {
       $http.get('/reqResetPasswd?email='+$scope.credentials.email).success(function(response) {
         $scope.success = response.success;
-        $scope.result = true;
+        $window.location.href = '/#/forgotpasswdconf';
       });
     };
   };
